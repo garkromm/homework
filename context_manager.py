@@ -16,7 +16,7 @@ def contextmanager_my_dec(f):
     wrapper.__doc__ = f.__doc__
     return wrapper
 
-@contextmanager_my_dec
+@contextmanager
 def open_file(path, *args, **kwargs):
     file = open(path,*args, **kwargs)
     try:
