@@ -2,16 +2,16 @@ from contextlib import contextmanager, ContextDecorator
 from functools import wraps
 
 
-class ContextManagerNew:
-    def __init__(self, f, *args, **kwargs):
-        self.context = f(*args, **kwargs)
+class FileContext:
+    def __init__(self, *args, **kwargs):
+        self.file = open(*args, **kwargs)
 
     def __enter__(self):
-        return self.context
+        return self.file
 
     def __exit__(self, exc_type, exc_value, traceback):
         print('I EXITED!')
-        self.context.close()
+        self.file.close()
 
 
 def wrapped(f):
@@ -51,11 +51,10 @@ def open_file(path, *args, **kwargs):
 
 
 def main():
-    # file = ContextManagerNew( open,'text.txt', 'r' )
-    # with file as f:
-    #     for line in f:
-    #         print(line)
-
+    with FileContext('text.txt', 'r') as f:
+        for line in f:
+            print(line)
+    print(open_file.__name__)
     with open_file('text.txt') as f:
         for line in f:
             print(line)
