@@ -1,8 +1,8 @@
-from contextlib import contextmanager
+from contextlib import contextmanager, ContextDecorator
 from functools import wraps
 
 
-class ContextManagerNew():
+class ContextManagerNew:
     def __init__(self, f, *args, **kwargs):
         self.context = f(*args, **kwargs)
 
@@ -22,10 +22,21 @@ def wrapped(f):
     return wrapper
 
 
+class contextmanager_new:
+    def __init__(self, f, *args, **kwargs):
+        self.func = f(*args, **kwargs)
+
+    def __enter__(self):
+        return next(self.func)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+
 def contextmanager_my_dec(f):
     @wrapped(f)
     def wrapper(*args, **kwargs):
-        return ContextManagerNew(f, *args, **kwargs)
+        return contextmanager_new(f, *args, **kwargs)
     return wrapper
 
 
@@ -44,7 +55,7 @@ def main():
     # with file as f:
     #     for line in f:
     #         print(line)
-    print(open_file.__name__)
+
     with open_file('text.txt') as f:
         for line in f:
             print(line)
